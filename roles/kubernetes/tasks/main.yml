@@ -28,34 +28,21 @@
   become: true
   when: k8s_install_k9s
 
-- name: Install kubectx
-  ansible.builtin.get_url:
-    url: "https://github.com/ahmetb/kubectx/releases/latest/download/kubectx_linux_x86_64.tar.gz"
-    dest: /tmp/kubectx.tar.gz
-  when: k8s_install_kubectx
-
-- name: Extract kubectx
-  ansible.builtin.unarchive:
-    src: /tmp/kubectx.tar.gz
-    dest: /usr/local/bin
-    remote_src: true
-    creates: /usr/local/bin/kubectx
+- name: Install kubectx and kubens via git clone
+  ansible.builtin.git:
+    repo: https://github.com/ahmetb/kubectx.git
+    dest: /opt/kubectx
+    version: master
   become: true
   when: k8s_install_kubectx
 
-- name: Install kubens
-  ansible.builtin.get_url:
-    url: "https://github.com/ahmetb/kubectx/releases/latest/download/kubens_linux_x86_64.tar.gz"
-    dest: /tmp/kubens.tar.gz
-  when: k8s_install_kubectx
-
-- name: Extract kubens
-  ansible.builtin.unarchive:
-    src: /tmp/kubens.tar.gz
-    dest: /usr/local/bin
-    remote_src: true
-    creates: /usr/local/bin/kubens
+- name: Symlink kubectx and kubens
+  ansible.builtin.file:
+    src: "/opt/kubectx/{{ item }}"
+    dest: "/usr/local/bin/{{ item }}"
+    state: link
   become: true
+  loop: [kubectx, kubens]
   when: k8s_install_kubectx
 
 - name: Install kind
