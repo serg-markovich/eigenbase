@@ -1,10 +1,11 @@
 ---
-- name: Install security packages and pip3
+- name: Install security packages
   ansible.builtin.apt:
     name:
       - ufw
       - fail2ban
-      - python3-pip
+      - pipx
+      - pre-commit
     state: present
   become: true
 
@@ -21,11 +22,6 @@
     state: enabled
   become: true
   when: security_ufw_enable
-
-- name: Install pre-commit
-  ansible.builtin.pip:
-    name: pre-commit
-    state: present
 
 - name: Deploy global pre-commit config
   ansible.builtin.template:
