@@ -63,3 +63,19 @@ a self-hosted, privacy-first infrastructure stack.
 ## License
 
 [MIT](LICENSE)
+
+## Verified on
+
+| Machine | OS | Ansible | Status |
+|---|---|---|---|
+| HP EliteBook 845 G8 | Ubuntu 24.04 LTS | 2.20 | ✅ All core roles pass |
+
+### Tested roles
+- `make base` ✅
+- `make docker` ✅
+- `make k8s` ✅
+- `make devtools` ✅
+- `make dotfiles` ✅
+- `make azure` ✅
+- `make monitoring` ✅
+- `make security` ✅

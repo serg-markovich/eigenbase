@@ -49,3 +49,9 @@ update:            ## Re-run all (idempotent upgrade)
 
 help:              ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*##' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*##"}; {printf "\033[36m%-22s\033[0m %s\n", $$1, $$2}'
+
+verify: ## Check all tools are installed
+	@echo "Checking installed tools..."
+	@for tool in zsh docker kubectl helm k9s kubectx kind terraform az pre-commit; do \
+		which $$tool > /dev/null 2>&1 && echo "  ✅ $$tool" || echo "  ❌ $$tool missing"; \
+	done
