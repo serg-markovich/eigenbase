@@ -1,9 +1,10 @@
 ---
-- name: Install security packages
+- name: Install security packages and pip3
   ansible.builtin.apt:
     name:
       - ufw
       - fail2ban
+      - python3-pip
     state: present
   become: true
 
