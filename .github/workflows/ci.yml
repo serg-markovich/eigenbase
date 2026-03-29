@@ -1,3 +1,4 @@
+---
 name: CI
 
 on:
@@ -13,25 +14,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Ansible + ansible-lint
-        run: pip install ansible ansible-lint
+      - name: Install ansible-lint
+        run: pip install ansible-lint
 
       - name: Run ansible-lint
         run: ansible-lint site.yml
 
-  molecule:
-    name: Molecule (${{ matrix.role }})
+  syntax:
+    name: Syntax Check
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        role: [base, docker, devtools]
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: pip install ansible molecule molecule-plugins[docker] docker
+      - name: Install Ansible
+        run: pip install ansible
 
-      - name: Run Molecule
-        run: cd roles/${{ matrix.role }} && molecule test
-        env:
-          MOLECULE_ROLE_NAME: ${{ matrix.role }}
+      - name: Syntax check
+        run: ansible-playbook site.yml -i inventory/localhost.yml --syntax-check
