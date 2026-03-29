@@ -1,0 +1,15 @@
+---
+# Auto-detected at runtime — never hardcode
+ansible_user: "{{ lookup('env', 'USER') }}"
+home_dir:     "{{ lookup('env', 'HOME') }}"
+
+# Git — loaded from .env
+git_user_name:  "{{ lookup('env', 'GIT_USER_NAME')  | default('serg-markovich') }}"
+git_user_email: "{{ lookup('env', 'GIT_USER_EMAIL') | default('me@serg-markovich.de') }}"
+github_username: "{{ lookup('env', 'GITHUB_USERNAME') | default('serg-markovich') }}"
+
+# Azure — loaded from .env
+azure_tenant_id:        "{{ lookup('env', 'AZURE_TENANT_ID') }}"
+azure_subscription_id:  "{{ lookup('env', 'AZURE_SUBSCRIPTION_ID') }}"
+azure_resource_group:   "{{ lookup('env', 'AZURE_RESOURCE_GROUP')   | default('rg-eigenstack') }}"
+azure_storage_account:  "{{ lookup('env', 'AZURE_STORAGE_ACCOUNT')  | default('tfstateeigenstack') }}"

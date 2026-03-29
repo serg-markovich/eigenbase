@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Ansible Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Ansible + ansible-lint
+        run: pip install ansible ansible-lint
+
+      - name: Run ansible-lint
+        run: ansible-lint site.yml
+
+  molecule:
+    name: Molecule (${{ matrix.role }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        role: [base, docker, devtools]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: pip install ansible molecule molecule-plugins[docker] docker
+
+      - name: Run Molecule
+        run: cd roles/${{ matrix.role }} && molecule test
+        env:
+          MOLECULE_ROLE_NAME: ${{ matrix.role }}

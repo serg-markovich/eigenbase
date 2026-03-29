@@ -1,0 +1,13 @@
+[Unit]
+Description=Ollama LLM Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/ollama serve
+Restart=always
+RestartSec=3
+Environment=HOME={{ home_dir }}
+
+[Install]
+WantedBy=default.target

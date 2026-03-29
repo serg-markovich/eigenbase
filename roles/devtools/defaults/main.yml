@@ -1,0 +1,9 @@
+---
+devtools_vscode: true
+devtools_packages:
+  - jq
+  - yq
+  - direnv
+  - git-crypt
+  - shellcheck
+  - make

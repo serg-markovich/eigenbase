@@ -1,0 +1,9 @@
+.env
+*.retry
+*.pyc
+__pycache__/
+.molecule/
+.cache/
+*.vault_pass
+.DS_Store
+*.log

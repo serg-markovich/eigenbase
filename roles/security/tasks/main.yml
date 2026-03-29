@@ -1,0 +1,34 @@
+---
+- name: Install security packages
+  ansible.builtin.apt:
+    name:
+      - ufw
+      - fail2ban
+    state: present
+  become: true
+
+- name: Configure UFW rules
+  community.general.ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  loop: "{{ security_ufw_rules }}"
+  become: true
+
+- name: Enable UFW
+  community.general.ufw:
+    state: enabled
+  become: true
+  when: security_ufw_enable
+
+- name: Install pre-commit
+  ansible.builtin.pip:
+    name: pre-commit
+    state: present
+
+- name: Deploy global pre-commit config
+  ansible.builtin.template:
+    src: pre-commit-config.yml.j2
+    dest: "{{ home_dir }}/.pre-commit-config.yaml"
+    mode: '0644'
+  when: security_precommit

@@ -1,0 +1,39 @@
+---
+# Single source of truth — edit versions here to upgrade entire stack
+
+base_packages:
+  - git
+  - curl
+  - wget
+  - zsh
+  - tmux
+  - fzf
+  - ripgrep
+  - jq
+  - htop
+  - bat
+  - unzip
+  - gnupg
+  - ca-certificates
+  - apt-transport-https
+  - software-properties-common
+
+# Tool versions
+terraform_version: "1.7.5"
+kubectl_version: "1.29.3"
+helm_version: "3.14.3"
+k9s_version: "0.32.4"
+kind_version: "0.22.0"
+node_exporter_version: "1.7.0"
+
+# VS Code extensions
+vscode_extensions:
+  - redhat.ansible
+  - hashicorp.terraform
+  - ms-azuretools.vscode-docker
+  - ms-kubernetes-tools.vscode-kubernetes-tools
+  - redhat.vscode-yaml
+  - eamodio.gitlens
+  # - github.copilot
+  # - github.vscode-github-actions
+  # - ms-vscode.live-server

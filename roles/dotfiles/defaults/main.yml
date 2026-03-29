@@ -1,0 +1,5 @@
+---
+dotfiles_zshrc: true
+dotfiles_gitconfig: true
+dotfiles_tmuxconf: true
+dotfiles_dir: "{{ home_dir }}/.dotfiles"

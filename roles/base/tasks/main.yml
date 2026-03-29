@@ -1,0 +1,25 @@
+---
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+  become: true
+
+- name: Install base packages
+  ansible.builtin.apt:
+    name: "{{ base_packages }}"
+    state: present
+  become: true
+
+- name: Set zsh as default shell
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    shell: "{{ base_shell }}"
+  become: true
+
+- name: Install Oh My Zsh
+  ansible.builtin.shell: |
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  args:
+    creates: "{{ home_dir }}/.oh-my-zsh"
+  when: base_ohmyzsh

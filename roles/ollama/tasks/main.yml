@@ -1,0 +1,33 @@
+---
+- name: Install Ollama
+  ansible.builtin.shell: |
+    curl -fsSL https://ollama.ai/install.sh | sh
+  args:
+    creates: /usr/local/bin/ollama
+
+- name: Create systemd user service directory
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.config/systemd/user"
+    state: directory
+    mode: '0755'
+
+- name: Deploy Ollama systemd user service
+  ansible.builtin.template:
+    src: ollama.service.j2
+    dest: "{{ home_dir }}/.config/systemd/user/ollama.service"
+    mode: '0644'
+  when: ollama_systemd_user_service
+
+- name: Enable Ollama user service
+  ansible.builtin.systemd:
+    name: ollama
+    enabled: true
+    state: started
+    scope: user
+  when: ollama_systemd_user_service
+
+- name: Pull Ollama models
+  ansible.builtin.command: "ollama pull {{ item }}"
+  loop: "{{ ollama_models }}"
+  when: ollama_models | length > 0
+  changed_when: false

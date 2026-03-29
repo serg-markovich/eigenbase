@@ -1,0 +1,34 @@
+---
+- name: Install dev tools
+  ansible.builtin.apt:
+    name: "{{ devtools_packages }}"
+    state: present
+  become: true
+
+- name: Add VS Code GPG key
+  ansible.builtin.apt_key:
+    url: https://packages.microsoft.com/keys/microsoft.asc
+    state: present
+  become: true
+  when: devtools_vscode
+
+- name: Add VS Code repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64] https://packages.microsoft.com/repos/code stable main"
+    state: present
+  become: true
+  when: devtools_vscode
+
+- name: Install VS Code
+  ansible.builtin.apt:
+    name: code
+    state: present
+    update_cache: true
+  become: true
+  when: devtools_vscode
+
+- name: Install VS Code extensions
+  ansible.builtin.command: "code --install-extension {{ item }} --force"
+  loop: "{{ vscode_extensions }}"
+  changed_when: false
+  when: devtools_vscode

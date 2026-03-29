@@ -1,0 +1,7 @@
+---
+eigenstack_kind_cluster: true
+eigenstack_cluster_name: eigenstack-local
+eigenstack_namespaces:
+  - monitoring
+  - ingress
+  - apps

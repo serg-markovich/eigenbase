@@ -1,0 +1,25 @@
+# eigenbase managed — edit roles/dotfiles/templates/gitconfig.j2 to customize
+[user]
+	name  = {{ git_user_name }}
+	email = {{ git_user_email }}
+
+[core]
+	editor      = code --wait
+	autocrlf    = input
+	excludesfile = ~/.gitignore_global
+
+[pull]
+	rebase = true
+
+[push]
+	default = current
+
+[alias]
+	st  = status
+	co  = checkout
+	br  = branch
+	lg  = log --oneline --graph --decorate --all
+	undo = reset HEAD~1 --mixed
+
+[init]
+	defaultBranch = main

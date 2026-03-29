@@ -1,0 +1,28 @@
+---
+- name: Install Terraform
+  ansible.builtin.unarchive:
+    src: "https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip"
+    dest: /usr/local/bin
+    remote_src: true
+    creates: /usr/local/bin/terraform
+  become: true
+  when: terraform_install
+
+- name: Create Azure resource group for Terraform state
+  ansible.builtin.command: >
+    az group create --name "{{ azure_resource_group }}" --location germanywestcentral
+  when: terraform_create_backend
+  changed_when: false
+
+- name: Create Azure Storage Account for Terraform state
+  ansible.builtin.command: >
+    az storage account create --name "{{ azure_storage_account }}"
+    --resource-group "{{ azure_resource_group }}" --sku Standard_LRS
+  when: terraform_create_backend
+  changed_when: false
+
+- name: Create blob container tfstate
+  ansible.builtin.command: >
+    az storage container create --name tfstate --account-name "{{ azure_storage_account }}"
+  when: terraform_create_backend
+  changed_when: false

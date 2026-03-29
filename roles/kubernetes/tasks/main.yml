@@ -1,0 +1,67 @@
+---
+- name: Install kubectl
+  ansible.builtin.get_url:
+    url: "https://dl.k8s.io/release/v{{ kubectl_version }}/bin/linux/amd64/kubectl"
+    dest: /usr/local/bin/kubectl
+    mode: '0755'
+  become: true
+
+- name: Install Helm
+  ansible.builtin.shell: |
+    curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | DESIRED_VERSION=v{{ helm_version }} bash
+  args:
+    creates: /usr/local/bin/helm
+
+- name: Download k9s
+  ansible.builtin.get_url:
+    url: "https://github.com/derailed/k9s/releases/download/v{{ k9s_version }}/k9s_Linux_amd64.tar.gz"
+    dest: /tmp/k9s.tar.gz
+  when: k8s_install_k9s
+
+- name: Extract k9s
+  ansible.builtin.unarchive:
+    src: /tmp/k9s.tar.gz
+    dest: /usr/local/bin
+    remote_src: true
+    include: [k9s]
+    creates: /usr/local/bin/k9s
+  become: true
+  when: k8s_install_k9s
+
+- name: Install kubectx
+  ansible.builtin.get_url:
+    url: "https://github.com/ahmetb/kubectx/releases/latest/download/kubectx_linux_x86_64.tar.gz"
+    dest: /tmp/kubectx.tar.gz
+  when: k8s_install_kubectx
+
+- name: Extract kubectx
+  ansible.builtin.unarchive:
+    src: /tmp/kubectx.tar.gz
+    dest: /usr/local/bin
+    remote_src: true
+    creates: /usr/local/bin/kubectx
+  become: true
+  when: k8s_install_kubectx
+
+- name: Install kubens
+  ansible.builtin.get_url:
+    url: "https://github.com/ahmetb/kubectx/releases/latest/download/kubens_linux_x86_64.tar.gz"
+    dest: /tmp/kubens.tar.gz
+  when: k8s_install_kubectx
+
+- name: Extract kubens
+  ansible.builtin.unarchive:
+    src: /tmp/kubens.tar.gz
+    dest: /usr/local/bin
+    remote_src: true
+    creates: /usr/local/bin/kubens
+  become: true
+  when: k8s_install_kubectx
+
+- name: Install kind
+  ansible.builtin.get_url:
+    url: "https://kind.sigs.k8s.io/dl/v{{ kind_version }}/kind-linux-amd64"
+    dest: /usr/local/bin/kind
+    mode: '0755'
+  become: true
+  when: k8s_install_kind

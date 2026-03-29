@@ -1,0 +1,4 @@
+---
+base_shell: /usr/bin/zsh
+base_ohmyzsh: true
+base_ohmyzsh_theme: "robbyrussell"
