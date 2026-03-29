@@ -8,6 +8,7 @@
 
 - name: Install Helm
   ansible.builtin.shell: |
+    set -o pipefail
     curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | DESIRED_VERSION=v{{ helm_version }} bash
   args:
     creates: /usr/local/bin/helm
@@ -16,7 +17,8 @@
   ansible.builtin.get_url:
     url: "https://github.com/derailed/k9s/releases/download/v{{ k9s_version }}/k9s_Linux_amd64.tar.gz"
     dest: /tmp/k9s.tar.gz
-  when: k8s_install_k9s
+  mode: "0644"
+  when: kubernetes_install_k9s
 
 - name: Extract k9s
   ansible.builtin.unarchive:
@@ -26,7 +28,7 @@
     include: [k9s]
     creates: /usr/local/bin/k9s
   become: true
-  when: k8s_install_k9s
+  when: kubernetes_install_k9s
 
 - name: Install kubectx and kubens via git clone
   ansible.builtin.git:
@@ -34,7 +36,7 @@
     dest: /opt/kubectx
     version: master
   become: true
-  when: k8s_install_kubectx
+  when: kubernetes_install_kubectx
 
 - name: Symlink kubectx and kubens
   ansible.builtin.file:
@@ -43,7 +45,7 @@
     state: link
   become: true
   loop: [kubectx, kubens]
-  when: k8s_install_kubectx
+  when: kubernetes_install_kubectx
 
 - name: Install kind
   ansible.builtin.get_url:
@@ -51,4 +53,4 @@
     dest: /usr/local/bin/kind
     mode: '0755'
   become: true
-  when: k8s_install_kind
+  when: kubernetes_install_kind

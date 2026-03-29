@@ -8,6 +8,7 @@
 
 - name: Download Docker GPG key
   ansible.builtin.shell: |
+    set -o pipefail
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
   args:
     creates: /etc/apt/keyrings/docker.gpg

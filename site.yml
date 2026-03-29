@@ -1,5 +1,5 @@
 ---
-- name: eigenbase — DevOps workstation setup
+- name: Eigenbase - DevOps workstation setup
   hosts: localhost
   connection: local
   become: false
@@ -8,14 +8,14 @@
     - vars/packages.yml
 
   roles:
-    - { role: base,               tags: base }
-    - { role: docker,             tags: docker }
-    - { role: kubernetes,         tags: kubernetes }
-    - { role: azure_enterprise,   tags: azure_enterprise }
-    - { role: terraform_backend,  tags: terraform_backend }
-    - { role: eigenstack_dev,     tags: eigenstack_dev }
-    - { role: monitoring,         tags: monitoring }
-    - { role: security,           tags: security }
-    - { role: devtools,           tags: devtools }
-    - { role: ollama,             tags: ollama }
-    - { role: dotfiles,           tags: dotfiles }
+    - {role: base, tags: base}
+    - {role: docker, tags: docker}
+    - {role: kubernetes, tags: kubernetes}
+    - {role: azure_enterprise, tags: azure_enterprise}
+    - {role: terraform_backend, tags: terraform_backend}
+    - {role: eigenstack_dev, tags: eigenstack_dev}
+    - {role: monitoring, tags: monitoring}
+    - {role: security, tags: security}
+    - {role: devtools, tags: devtools}
+    - {role: ollama, tags: ollama}
+    - {role: dotfiles, tags: dotfiles}

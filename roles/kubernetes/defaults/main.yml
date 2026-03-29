@@ -1,4 +1,4 @@
 ---
-k8s_install_kind: true
-k8s_install_k9s: true
-k8s_install_kubectx: true
+kubernetes_install_kind: true
+kubernetes_install_k9s: true
+kubernetes_install_kubectx: true

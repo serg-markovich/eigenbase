@@ -1,3 +1,3 @@
 ---
-terraform_install: true
-terraform_create_backend: false
+terraform_backend_install: true
+terraform_backend_create_backend: false

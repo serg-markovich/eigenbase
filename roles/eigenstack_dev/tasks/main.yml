@@ -13,21 +13,21 @@
 
 - name: Check existing kind clusters
   ansible.builtin.command: kind get clusters
-  register: kind_clusters
+  register: eigenstack_dev_kind_clusters
   changed_when: false
   failed_when: false
 
 - name: Create kind cluster for eigenstack dev
   ansible.builtin.command: >
-    kind create cluster --name {{ eigenstack_cluster_name }}
+    kind create cluster --name {{ eigenstack_dev_cluster_name }}
     --config {{ home_dir }}/.eigenstack/kind-cluster.yml
   when:
-    - eigenstack_kind_cluster
-    - eigenstack_cluster_name not in kind_clusters.stdout
+    - eigenstack_dev_kind_cluster
+    - eigenstack_dev_cluster_name not in eigenstack_dev_kind_clusters.stdout
 
 - name: Create Kubernetes namespaces
   ansible.builtin.command: >
     kubectl create namespace {{ item }} --dry-run=client -o yaml | kubectl apply -f -
-  loop: "{{ eigenstack_namespaces }}"
-  when: eigenstack_kind_cluster
+  loop: "{{ eigenstack_dev_namespaces }}"
+  when: eigenstack_dev_kind_cluster
   changed_when: false

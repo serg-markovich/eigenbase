@@ -17,11 +17,11 @@
     name: azure-cli
     state: present
   become: true
-  when: azure_cli_install
+  when: azure_enterprise_cli_install
 
 - name: Set Azure subscription
   ansible.builtin.command: az account set --subscription "{{ azure_subscription_id }}"
   when:
-    - azure_configure_subscription
+    - azure_enterprise_configure_subscription
     - azure_subscription_id | length > 0
   changed_when: false
